@@ -21,6 +21,8 @@ build/
 .vscode/
 .vercel
 .screenshots/
+back-end/.env
+front-end/.env
 
 npm-debug.log*
 yarn-debug.log*
