@@ -30,7 +30,6 @@ export default function Search(){
         try{
             event.preventDefault();
             setSearched(true);
-            console.log("form submitted!");
             await listReservations(formData, abortController.signal)
                 .then(setReservations)
                 .catch(setReservationsError);

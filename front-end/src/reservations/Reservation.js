@@ -5,12 +5,13 @@ export default function Reservation({loadDashboard, reservation}){
     const reservation_id = reservation.reservation_id;
 
     const handleCancel = async () =>{
+        const abortController = new AbortController();
         const choice = window.confirm("Do you want to cancel this reservation?\n\nThis cannot be undone.");
         if(choice){
-            const upRes = await updateReservationStatus(reservation_id, "cancelled");
-            console.log(upRes)
+            await updateReservationStatus(reservation_id, "cancelled", abortController.signal);
             loadDashboard();
         }
+        return () => abortController.abort();
     }
     return (
         <tr>
@@ -24,14 +25,14 @@ export default function Reservation({loadDashboard, reservation}){
                 data-reservation-id-status={reservation.reservation_id}
             >{reservation.status}</td>
             <td>
-                {reservation.status == "booked" ? (<Link 
+                {reservation.status === "booked" ? (<Link 
                     className="btn btn-secondary mr-2"
                     to={`/reservations/${reservation_id}/seat`}
-                    href={`/reservations/${reservation_id}/seat`}
+                    href='/reservations/${reservation_id}/seat'
                 >Seat</Link>) : ( <></>)}
             </td>
             <td>
-                {reservation.status == "booked" ? (<Link 
+                {reservation.status === "booked" ? (<Link 
                     className="btn btn-secondary mr-2"
                     to={`/reservations/${reservation_id}/edit`}
                 >Edit</Link>) : ( <></>)}

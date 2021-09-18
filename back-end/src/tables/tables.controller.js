@@ -8,7 +8,6 @@ const {reservationExists} = require("../reservations/reservations.controller");
 
 async function list(req, res, next){
     let data = await service.list();
-  console.log(data);
   res.json({
     data
   });
@@ -25,7 +24,6 @@ async function seat(req, res, next){
 async function unseat(req, res, next){
   const table = res.locals.table;
   const data = await service.unseat(table);
-  console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n",data)
   res.json({data})
 }
 

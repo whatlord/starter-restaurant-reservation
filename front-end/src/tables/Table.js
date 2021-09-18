@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { unseatTable, updateReservation, updateReservationStatus } from "../utils/api";
+import { unseatTable, updateReservationStatus } from "../utils/api";
 
 export default function Table({loadDashboard, tabl}){
 
@@ -9,8 +9,7 @@ export default function Table({loadDashboard, tabl}){
         const choice = window.confirm("Is this table ready to seat new guests?\n\nThis cannot be undone.");
         if(choice){
             const result = await unseatTable(table.table_id, table.reservation_id);
-            const upRes = await updateReservationStatus(table.reservation_id, "finished");
-            console.log(upRes)
+            await updateReservationStatus(table.reservation_id, "finished");
             setTable(result);
             loadDashboard();
         }

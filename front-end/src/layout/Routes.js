@@ -41,7 +41,7 @@ function Routes() {
         <NewTable />
       </Route>
       <Route path="/dashboard">
-        <Dashboard obj={Object.fromEntries((new URLSearchParams(window.location.search)).entries())} />
+        <Dashboard />
       </Route>
       <Route>
         <NotFound />

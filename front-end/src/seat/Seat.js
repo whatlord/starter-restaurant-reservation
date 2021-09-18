@@ -25,10 +25,9 @@ export default function Seat(){
             setSeatsNeeded(Number(people))
         }
         getTables();
-    },[])
+    },[reservation_id])
 
     let options = tables.filter((table) => {
-        console.log(table.capacity, seatsNeeded, Number(table.capacity) >= Number(seatsNeeded))
         return (Number(table.capacity) >= Number(seatsNeeded) && !table.reservation_id)}).map(table => {
         
         return <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>
@@ -48,8 +47,9 @@ export default function Seat(){
     const handleSubmit = async (event) => {
         try{
         event.preventDefault();
-        console.log(formData);
-        console.log("form submitted!");
+        if(!formData.table_id){
+            throw new Error(`Please select a table`)
+        }
         await seatTable(formData.table_id, reservation_id);
         setFormData(initialFormData);
         history.push(`/dashboard`)
@@ -65,7 +65,6 @@ export default function Seat(){
     return (
         <div>
             <ErrorAlert error={newSeatError} />
-            {JSON.stringify(tables)}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="table_id">Table:</label>
@@ -74,7 +73,7 @@ export default function Seat(){
                         className="form-control"
                         onChange={handleChange}
                     >
-                        <option value={null} default disabled>--Choose a table--</option>
+                        <option value={null} default>--Choose a table--</option>
                         {options}
 
                     </select>

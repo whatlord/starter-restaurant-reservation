@@ -37,11 +37,7 @@ function resUpdate(reservation){
         .update({status: "seated"})
 }
 
-// function resFinish(reservation_id){
-//     return knex("reservations")
-//         .where({reservation_id})
-//         .update({status: "finished"})
-// }
+
 
 module.exports = {
     list,
@@ -50,5 +46,4 @@ module.exports = {
     read,
     create,
     resUpdate,
-    //resFinish,
 }

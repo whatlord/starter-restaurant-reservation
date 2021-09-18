@@ -32,10 +32,9 @@ export default function Form(){
             getRes();
         }
         return () => abortController.abort();
-    },[newResError, reservation_id])
+    },[reservation_id])
 
   function loadError(){
-    console.log(formData);
     if(!checkDay(formData.reservation_date)){
       setNewResError(new Error(`The resturant will be closed on ${formData.reservation_date} and all Tuesdays. Please choose another date.`))
     }else if(!checkTime(formData.reservation_time)){
@@ -72,21 +71,19 @@ export default function Form(){
         const abortController = new AbortController();
         try{
         event.preventDefault();
-        console.log(formData);
         if(!checkDay(formData.reservation_date)){
           throw new Error(`The resturant will be closed on ${formData.reservation_date} and all Tuesdays. Please choose another date.`)
         }else if(!checkTime(formData.reservation_time)){
           throw new Error(`A reservation can only be made between 10:30 AM and 9:30 PM.`)
         }else if(!inFuture()){
-          throw new Error(`A reseration can only be made in the future`)
+          throw new Error(`A reservation can only be made in the future`)
         }else{
           setNewResError(null);
         }
-        console.log("form submitted!");
         if(reservation_id){
-            let updatedRes = await updateReservation(reservation_id, formData, abortController.signal);
+            await updateReservation(reservation_id, formData, abortController.signal);
         }else{
-            createReservation(formData, abortController.signal)
+            await createReservation(formData, abortController.signal)
         }
         setFormData(initialFormData);
         history.push(`/dashboard?date=${formData.reservation_date}`)
@@ -102,7 +99,6 @@ export default function Form(){
       }
     
       const checkTime = (timeString) => {
-        const time = new Date(`${today()} ${timeString}`);
         return (timeString > `10:30` && timeString < `21:30`)
       }
     

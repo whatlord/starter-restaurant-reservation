@@ -6,7 +6,6 @@ const AEB = require('../errors/asyncErrorBoundary.js')
  */
 async function list(req, res) {
   const query = req.query;
-  console.log(query)
   let data = await service.list(query.date, query.mobile_number);
   res.json({
     data
@@ -18,12 +17,9 @@ async function reservationExists(req, res, next) {
   if(!reservation_id){
     reservation_id = req.body.data.reservation_id;
   }
-  console.log(reservation_id)
   const foundRes = await service.read(reservation_id);
-  console.log("ran find")
   if (foundRes) {
     res.locals.reservation = foundRes;
-    console.log("sending find to next")
     return next();
   }
   next({
@@ -44,13 +40,10 @@ async function create(req, res, next){
 }
 
 async function reservationValid(req, res, next){
-  console.log("received finding")
   const { data: { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = {} } = req.body;
   if(first_name && last_name && mobile_number && reservation_date && reservation_time && people){
-    console.log("pass first round")
       if(/^\d{4}-\d{2}-\d{2}$/.test(reservation_date)){
         if(/^\d{2}:\d{2}$/.test(reservation_time) || /^\d{2}:\d{2}:\d{2}$/.test(reservation_time)){
-          console.log("resValid");
           return next();
         }else{
           next({
@@ -88,7 +81,6 @@ async function reservationTimeValid(req, res, next){
       message: `Reservation must not be on a tuesday.`
     })
   }else{
-    console.log("resTimeValid")
     return next();
   }
 
@@ -101,14 +93,12 @@ async function updateStatus(req, res, next){
     ...reservation,
     status
   }
-  console.log(reservation, status, updatedRes)
   const data = await service.update(updatedRes);
   res.json({ data})
 }
 
 async function update(req, res, next){
   const reservation = req.body.data;
-  console.log(reservation)
   const data = await service.update(reservation);
   res.json({data})
 }

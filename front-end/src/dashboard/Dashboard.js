@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { listReservations, listTables } from "../utils/api";
 import { today, previous, next } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
@@ -13,11 +12,13 @@ import Tables from "../tables/Tables";
  * @returns {JSX.Element}
  */
 function Dashboard({ obj }) {
-  const history = useHistory();
-  let inDate = obj.date || Object.fromEntries((new URLSearchParams(window.location.search)).entries()).date
+  let query = new URLSearchParams(window.location.search)
+  let inDate = query.get('date')
+  console.log(inDate)
   if(!inDate){
     inDate = today();
   }
+  console.log(inDate)
   const [date, setDate] = useState(inDate);
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
@@ -31,7 +32,7 @@ function Dashboard({ obj }) {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
-    listTables()
+    listTables({},abortController.signal)
       .then(setTables)
       .catch(setReservationsError)
     return () => abortController.abort();

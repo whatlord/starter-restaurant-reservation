@@ -3,10 +3,8 @@ const knex = require('../db/connection');
 function list(date, mobile_number){
     if(!mobile_number){
         if(date){
-            console.log("date")
             return knex('reservations').select('*').where({reservation_date: date}).whereNot({status: "finished"}).whereNot({status: "cancelled"}).orderBy("reservation_time");
         }else{
-            console.log("no date")
             return knex('reservations').select('*').orderBy("reservation_time");
         }
     }else{
@@ -33,7 +31,6 @@ function read(reservation_id){
 }
 
 function update(reservation){
-    console.log("reached updat")
     return knex('reservations')
         .where({ reservation_id: reservation.reservation_id})
         .update(reservation, "*")

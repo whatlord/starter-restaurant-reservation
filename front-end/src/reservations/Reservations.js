@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import Reservation from "./Reservation";
 
 export default function Reservations({loadDashboard, reses}){

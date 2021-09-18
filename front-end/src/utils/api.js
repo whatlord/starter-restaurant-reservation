@@ -6,7 +6,7 @@ import formatReservationDate from "./format-reservation-date";
 import formatReservationTime from "./format-reservation-date";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "https://ajj-final-back-end.herokuapp.com";
+  process.env.REACT_APP_API_BASE_URL || "https://localhost:5000";
 
 /**
  * Defines the default headers for these functions to work with `json-server`
@@ -45,7 +45,6 @@ async function fetchJson(url, options, onCancel) {
     return payload.data;
   } catch (error) {
     if (error.name !== "AbortError") {
-      console.error(error.stack);
       throw error;
     }
     return Promise.resolve(onCancel);
@@ -61,7 +60,6 @@ async function fetchJson(url, options, onCancel) {
 export async function listReservations(params, signal) {
   //let queryString = Object.keys(params).map(key => key + '=' + params[key]).join('&');
   const url = new URL(`${API_BASE_URL}/reservations`);
-  console.log(params)
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
@@ -78,9 +76,6 @@ export async function listReservations(params, signal) {
 
  export async function readReservation(reservation_id, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
-  console.log(reservation_id)
-  
-  
   return await fetchJson(url, { signal }, {})
     .then(formatReservationDate)
     .then(formatReservationTime);
@@ -172,9 +167,6 @@ export async function createReservation(data) {
 
  export async function readTable(table_id, signal) {
   const url = new URL(`${API_BASE_URL}/tables/${table_id}`);
-  console.log(table_id)
-  
-  
   return await fetchJson(url, { signal }, {})
 }
 
@@ -186,7 +178,6 @@ export async function createReservation(data) {
 
  export async function updateReservationStatus(reservation_id, status, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/status`);
-  console.log(url)
   const options = {
     method: "PUT",
     headers,
@@ -203,7 +194,6 @@ export async function createReservation(data) {
 
  export async function updateReservation(reservation_id, data, signal) {
   const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}/edit`);
-  console.log(url)
   const options = {
     method: "PUT",
     headers,
