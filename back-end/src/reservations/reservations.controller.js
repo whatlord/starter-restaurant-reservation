@@ -48,17 +48,58 @@ async function reservationValid(req, res, next){
         }else{
           next({
             status: 400,
-            message: `reservation time must be in hh:mm format.`
+            message: `reservation_time must be in hh:mm format.`
         })
         }
       }else{
         next({
           status: 400,
-          message: `reservation date must be in yyyy-mm-dd format.`
+          message: `reservation_date must be in yyyy-mm-dd format.`
         })
       }
       
     
+  }
+  if(!first_name){
+    next({
+      status: 400,
+      message: `first_name is missing or empty`
+    })
+  }else if(!last_name){
+    next({
+      status: 400,
+      message: `last_name is missing or empty`
+    })
+  }else if(!mobile_number){
+    next({
+      status: 400,
+      message: `mobile_number is missing or empty`
+    })
+  }else if(!mobile_number){
+    next({
+      status: 400,
+      message: `mobile_number is missing or empty`
+    })
+  }else if(!reservation_date){
+    next({
+      status: 400,
+      message: `reservation_date is missing or empty`
+    })
+  }else if(!reservation_time){
+    next({
+      status: 400,
+      message: `reservation_time is missing or empty`
+    })
+  }else if(!people){
+    next({
+      status: 400,
+      message: `people is missing or zero`
+    })
+  }else if(typeof people !== "number"){
+    next({
+      status: 400,
+      message: `people is missing or zero`
+    })
   }
 }
 
@@ -73,12 +114,12 @@ async function reservationTimeValid(req, res, next){
   }else if(reservation_time < `10:30` || reservation_time > `21:30`){
     next({
       status: 400,
-      message: `Reservation must be between 10:30 AM and 9:30 PM.`
+      message: `reservation_time must be between 10:30 AM and 9:30 PM.`
     })
   }else if(date.getDay() == 2){
     next({
       status: 400,
-      message: `Reservation must not be on a tuesday.`
+      message: `The restaurant is closed on tuesdays.`
     })
   }else{
     return next();
