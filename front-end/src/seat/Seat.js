@@ -27,8 +27,7 @@ export default function Seat(){
         getTables();
     },[reservation_id])
 
-    let options = tables.filter((table) => {
-        return (Number(table.capacity) >= Number(seatsNeeded) && !table.reservation_id)}).map(table => {
+    let options = tables.map(table => {
         
         return <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>
     })
@@ -47,8 +46,15 @@ export default function Seat(){
     const handleSubmit = async (event) => {
         try{
         event.preventDefault();
+        const table = tables.find(table => table.table_id === Number(formData.table_id));
+        console.log(formData)
+        console.log(table)
         if(!formData.table_id){
             throw new Error(`Please select a table`)
+        }else if(seatsNeeded > table.capacity ){
+            throw new Error(`This table is not big enough for this party.`)
+        }else if(table.reservation_id){
+            throw new Error(`This table is occupied. Pleach choose another table.`)
         }
         await seatTable(formData.table_id, reservation_id);
         setFormData(initialFormData);

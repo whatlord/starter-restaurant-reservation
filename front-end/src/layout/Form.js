@@ -60,7 +60,7 @@ export default function Form(){
           ...formData,
           [event.target.name]: value,
         });
-        loadError();
+        setNewResError(null)
     }
     
     const handleCancel = () => {
@@ -143,7 +143,6 @@ export default function Form(){
             id="mobile_number"
             type="tel"
             name="mobile_number"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             onChange={handleChange}
             value={formData.mobile_number}
             required
@@ -157,7 +156,6 @@ export default function Form(){
             id="reservation_date"
             type="date"
             name="reservation_date"
-            min={onDate}
             onChange={handleChange}
             value={formData.reservation_date}
             required
@@ -171,8 +169,6 @@ export default function Form(){
             type="time"
             id="reservation_time"
             name="reservation_time"
-            min="10:30"
-            max="21:30"
             onChange={handleChange}
             value={formData.reservation_time}
             required
