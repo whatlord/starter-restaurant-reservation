@@ -47,8 +47,6 @@ export default function Seat(){
         try{
         event.preventDefault();
         const table = tables.find(table => table.table_id === Number(formData.table_id));
-        console.log(formData)
-        console.log(table)
         if(!formData.table_id){
             throw new Error(`Please select a table`)
         }else if(seatsNeeded > table.capacity ){

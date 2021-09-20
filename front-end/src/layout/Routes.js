@@ -12,8 +12,6 @@ import Edit from "../reservations/Edit";
 /**
  * Defines all the routes for the application.
  *
- * You will need to make changes to this file.
- *
  * @returns {JSX.Element}
  */
 function Routes() {

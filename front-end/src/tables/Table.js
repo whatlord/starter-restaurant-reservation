@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { unseatTable, updateReservationStatus } from "../utils/api";
+import { unseatTable } from "../utils/api";
 
 export default function Table({loadDashboard, tabl}){
 

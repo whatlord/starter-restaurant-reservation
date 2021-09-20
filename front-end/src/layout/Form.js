@@ -45,9 +45,6 @@ export default function Form(){
       setNewResError(null);
     }
   }
-
-
-    
    
   
 
@@ -79,7 +76,6 @@ export default function Form(){
         }else{
           setNewResError(null);
         }
-        console.log(formData)
         if(reservation_id){
             await updateReservation(reservation_id, formData, abortController.signal);
         }else{

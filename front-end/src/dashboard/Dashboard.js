@@ -11,14 +11,12 @@ import Tables from "../tables/Tables";
  *  the date for which the user wants to view reservations.
  * @returns {JSX.Element}
  */
-function Dashboard({ obj }) {
+function Dashboard() {
   let query = new URLSearchParams(window.location.search)
   let inDate = query.get('date')
-  console.log(inDate)
   if(!inDate){
     inDate = today();
   }
-  console.log(inDate)
   const [date, setDate] = useState(inDate);
   const [reservations, setReservations] = useState([]);
   const [tables, setTables] = useState([]);
