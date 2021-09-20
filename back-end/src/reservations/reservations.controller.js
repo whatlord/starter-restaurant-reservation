@@ -15,7 +15,7 @@ async function list(req, res) {
 async function reservationExists(req, res, next) {
   let { reservation_id } = req.params;
   const data = req.body.data;
-  if(!data){
+  if(!reservation_id && !data){
     next({
       status: 400,
       message: `data is missing`,
