@@ -17,7 +17,7 @@ async function seat(req, res, next){
   const reservation = res.locals.reservation;
   const table = res.locals.table;
   const data = await service.seat(reservation, table);
-  await service.resUpdate(reservation)
+  await service.resUpdate(reservation.reservation_id, "seated")
   res.json({data})
 }
 
@@ -30,6 +30,7 @@ async function unseat(req, res, next){
     })
   }
   const data = await service.unseat(table);
+  await service.resUpdate(req.body.data.reservation_id, "finished")
   res.json({data})
 }
 

@@ -9,7 +9,6 @@ export default function Table({loadDashboard, tabl}){
         const choice = window.confirm("Is this table ready to seat new guests?\n\nThis cannot be undone.");
         if(choice){
             const result = await unseatTable(table.table_id, table.reservation_id);
-            await updateReservationStatus(table.reservation_id, "finished");
             setTable(result);
             loadDashboard();
         }

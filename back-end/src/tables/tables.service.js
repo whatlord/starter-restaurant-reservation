@@ -31,10 +31,10 @@ function create(table){
         .then((createRecords) => createRecords[0]);
 }
 
-function resUpdate(reservation){
+function resUpdate(reservation_id, status){
     return knex("reservations")
-        .where({reservation_id: reservation.reservation_id})
-        .update({status: "seated"})
+        .where({reservation_id})
+        .update({status})
 }
 
 
