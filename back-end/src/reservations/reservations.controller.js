@@ -22,9 +22,15 @@ async function reservationExists(req, res, next) {
     res.locals.reservation = foundRes;
     return next();
   }
+  if(!reservation_id){
+    next({
+      status: 400,
+      message: `missing reservation_id`,
+    });
+  }
   next({
     status: 404,
-    message: `Reservation id not found: ${reservation_id}`,
+    message: `reservation_id not found: ${reservation_id}`,
   });
 };
 
@@ -41,7 +47,7 @@ async function create(req, res, next){
 
 async function reservationValid(req, res, next){
   const { data: { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = {} } = req.body;
-  if(first_name && last_name && mobile_number && reservation_date && reservation_time && people){
+  if(first_name && last_name && mobile_number && reservation_date && reservation_time && people && typeof people === "number"){
       if(/^\d{4}-\d{2}-\d{2}$/.test(reservation_date)){
         if(/^\d{2}:\d{2}$/.test(reservation_time) || /^\d{2}:\d{2}:\d{2}$/.test(reservation_time)){
           return next();
@@ -95,10 +101,10 @@ async function reservationValid(req, res, next){
       status: 400,
       message: `people is missing or zero`
     })
-  }else if(typeof people !== "number"){
+  }else if(typeof(people) != "number"){
     next({
       status: 400,
-      message: `people is missing or zero`
+      message: `people is not a number`
     })
   }
 }
