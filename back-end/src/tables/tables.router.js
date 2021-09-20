@@ -8,13 +8,11 @@ const router = require("express").Router();
 const methodNotAllowed = require("../errors/methodNotAllowed");
 const controller = require("./tables.controller");
 
-router.route("/:table_id/seat")
+router.route("/:table_id")
+    .get(controller.read)
     .put(controller.seat)
     .delete(controller.unseat)
     .all(methodNotAllowed)
-
-router.route("/:table_id")
-    .get(controller.read)
 
 router.route("/")
     .get(controller.list)

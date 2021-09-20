@@ -61,7 +61,12 @@ async function validateSeating(req, res, next){
 
 async function validateTable(req, res, next){
   const {table_name, capacity} = req.body.data;
-  if(capacity < 1){
+  if(!table_name || !capacity){
+    next({
+      status: 400,
+      message: `'table_name' and 'capacity' are required.`
+    })
+  }else if(capacity < 1){
     next({
       status: 400,
       message: `capacity must be at least 1.`
@@ -69,7 +74,7 @@ async function validateTable(req, res, next){
   }else if(table_name.length < 2){
     next({
       status: 400,
-      message: `Table name must be at least 2 characters.`
+      message: `table_name must be at least 2 characters.`
     })
   }else{
     return next();
