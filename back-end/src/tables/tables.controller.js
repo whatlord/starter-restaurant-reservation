@@ -23,6 +23,12 @@ async function seat(req, res, next){
 
 async function unseat(req, res, next){
   const table = res.locals.table;
+  if(!table.reservation_id){
+    next({
+      status: 400,
+      message: `This table is not occupied.`
+    })
+  }
   const data = await service.unseat(table);
   res.json({data})
 }
@@ -47,7 +53,7 @@ async function validateSeating(req, res, next){
   if(table.capacity < reservation.people){
     next({
       status: 400,
-      message: `Table cannot seat this size party. Capacity: ${table.capacity} Pary size: ${reservation.people}.`
+      message: `Table cannot seat this size party. capacity: ${table.capacity} Pary size: ${reservation.people}.`
     })
   }else if(table.reservation_id){
     next({

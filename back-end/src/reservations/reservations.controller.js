@@ -17,16 +17,16 @@ async function reservationExists(req, res, next) {
   if(!reservation_id){
     reservation_id = req.body.data.reservation_id;
   }
-  const foundRes = await service.read(reservation_id);
-  if (foundRes) {
-    res.locals.reservation = foundRes;
-    return next();
-  }
   if(!reservation_id){
     next({
       status: 400,
       message: `missing reservation_id`,
     });
+  }
+  const foundRes = await service.read(reservation_id);
+  if (foundRes) {
+    res.locals.reservation = foundRes;
+    return next();
   }
   next({
     status: 404,
