@@ -14,8 +14,15 @@ async function list(req, res) {
 
 async function reservationExists(req, res, next) {
   let { reservation_id } = req.params;
+  const data = req.body.data;
+  if(!data){
+    next({
+      status: 400,
+      message: `data is missing`,
+    });
+  }
   if(!reservation_id){
-    reservation_id = req.body.data.reservation_id;
+    reservation_id = data.reservation_id;
   }
   if(!reservation_id){
     next({
@@ -136,6 +143,12 @@ async function reservationTimeValid(req, res, next){
 async function updateStatus(req, res, next){
   const reservation = res.locals.reservation;
   const {status} = req.body.data;
+  if(reservation.status === "finished"){
+    next({
+      status: 400,
+      message: `finished reservation cannot be updated.`
+    })
+  }
   const updatedRes = {
     ...reservation,
     status
@@ -149,10 +162,23 @@ async function update(req, res, next){
   const data = await service.update(reservation);
   res.json({data})
 }
+async function createStatusValid(req, res, next){
+  const { status } = req.body.data;
+  if(status === "finished" || status === "seated"){
+    next({
+      status: 400,
+      message: `status cannot be seated of finished for a new reservation.`
+    })
+  }else{
+    return next();
+  }
+}
+
+
 
 module.exports = {
   list: [AEB(list)],
-  create: [AEB(reservationValid), AEB(reservationTimeValid), AEB(create)],
+  create: [AEB(reservationValid), AEB(reservationTimeValid), AEB(createStatusValid), AEB(create)],
   read: [AEB(reservationExists), read],
   updateStatus: [AEB(reservationExists), AEB(updateStatus)],
   update: [AEB(reservationExists), AEB(reservationValid), AEB(reservationTimeValid), AEB(update)],

@@ -60,13 +60,22 @@ async function validateSeating(req, res, next){
       status: 400,
       message: `This table is occupied by reservation_id: ${table.reservation_id}.`
     })
+  }else if(reservation.status === "seated"){
+
   }
   return next();
 
 }
 
 async function validateTable(req, res, next){
-  const {table_name, capacity} = req.body.data;
+  const data = req.body.data;
+  if(!data){
+    next({
+      status: 400,
+      message: `data is missing.`
+    })
+  }
+  const {table_name, capacity} = data;
   if(!table_name || !capacity){
     next({
       status: 400,
