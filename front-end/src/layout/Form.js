@@ -51,16 +51,15 @@ export default function Form(){
    
   
 
-    const handleChange = (event) => {
-        const value =
-          event.target.type === "checkbox"
-            ? event.target.checked
-            : event.target.value;
-        setFormData({
-          ...formData,
-          [event.target.name]: value,
-        });
-        setNewResError(null)
+    const handleChange = ({ target: { name, value } }) => {
+      if (name === "people") {
+        value = Number(value);
+      }
+      setFormData((previousReservation) => ({
+        ...previousReservation,
+        [name]: value,
+      }));
+      setNewResError(null)
     }
     
     const handleCancel = () => {
@@ -80,6 +79,7 @@ export default function Form(){
         }else{
           setNewResError(null);
         }
+        console.log(formData)
         if(reservation_id){
             await updateReservation(reservation_id, formData, abortController.signal);
         }else{
@@ -181,7 +181,6 @@ export default function Form(){
           <input
             id="people"
             type="text"
-            pattern="\d*"
             name="people"
             onChange={handleChange}
             value={formData.people}

@@ -55,7 +55,7 @@ async function create(req, res, next){
 
 async function reservationValid(req, res, next){
   const { data: { first_name, last_name, mobile_number, reservation_date, reservation_time, people } = {} } = req.body;
-  if(first_name && last_name && mobile_number && reservation_date && reservation_time && people && typeof people === "number"){
+  if(first_name && last_name && mobile_number && reservation_date && reservation_time && people && typeof(people) == "number"){
       if(/^\d{4}-\d{2}-\d{2}$/.test(reservation_date)){
         if(/^\d{2}:\d{2}$/.test(reservation_time) || /^\d{2}:\d{2}:\d{2}$/.test(reservation_time)){
           return next();
