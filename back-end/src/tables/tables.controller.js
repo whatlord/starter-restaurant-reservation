@@ -23,7 +23,6 @@ async function seat(req, res, next){
 
 async function unseat(req, res, next){
   const table = res.locals.table;
-  console.log(data)
   if(!table.reservation_id){
     next({
       status: 400,
