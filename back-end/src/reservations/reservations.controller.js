@@ -1,5 +1,6 @@
 const service = require('./reservations.service.js');
 const AEB = require('../errors/asyncErrorBoundary.js')
+const validStatuses = ["booked", "seated", "finished", "cancelled"];
 
 /**
  * List handler for reservation resources
@@ -143,10 +144,16 @@ async function reservationTimeValid(req, res, next){
 async function updateStatus(req, res, next){
   const reservation = res.locals.reservation;
   const {status} = req.body.data;
+
   if(reservation.status === "finished"){
     next({
       status: 400,
       message: `finished reservation cannot be updated.`
+    })
+  }else if(!validStatuses.includes(status)){
+    next({
+      status: 400,
+      message: `${status} is not a valid status.`
     })
   }
   const updatedRes = {

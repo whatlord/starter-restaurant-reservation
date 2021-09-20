@@ -23,14 +23,15 @@ async function seat(req, res, next){
 
 async function unseat(req, res, next){
   const table = res.locals.table;
+  console.log(data)
   if(!table.reservation_id){
     next({
       status: 400,
       message: `This table is not occupied.`
     })
   }
+  await service.resUpdate(table.reservation_id, "finished")
   const data = await service.unseat(table);
-  await service.resUpdate(req.body.data.reservation_id, "finished")
   res.json({data})
 }
 
@@ -62,7 +63,10 @@ async function validateSeating(req, res, next){
       message: `This table is occupied by reservation_id: ${table.reservation_id}.`
     })
   }else if(reservation.status === "seated"){
-
+    next({
+      status: 400,
+      message: `This reservation is already seated.`
+    })
   }
   return next();
 
